@@ -1,17 +1,19 @@
 package com.piedpiper.gib.protocol;
 
-import com.piedpiper.gib.protocol.dao.IssueDao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
+
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public @Data class GetIssuesResponse extends Response {
+public @Data
+class TokenRequest extends Request{
 
-    private List<IssueDao> issues;
+    @NotNull
+    private String token;
 }
