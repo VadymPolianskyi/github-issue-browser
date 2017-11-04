@@ -8,4 +8,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IssueDao implements Serializable {
+    private String id;
+    private String name;
 }
