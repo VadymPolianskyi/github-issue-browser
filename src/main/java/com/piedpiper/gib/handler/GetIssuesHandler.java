@@ -35,7 +35,10 @@ public class GetIssuesHandler implements Handler<GetIssuesRequest, GetIssuesResp
                 .collect(Collectors.toList());
 
 
+        int issuesCount = githubService.getIssuesCount(request.getUser(), request.getRepository(),
+                request.getState(), request.getToken());
+
         log.info("Returned issues of repository with name '{}'.", request.getRepository());
-        return new GetIssuesResponse(issues);
+        return new GetIssuesResponse(issues, issuesCount);
     }
 }
