@@ -61,6 +61,11 @@ public class GithubService {
         throw new RuntimeException(); //todo: create custom IssuesNotFoundException
     }
 
+    public int getIssuesCount(String user, String repositoryName, GHIssueState state, String token) {
+        List<GHIssue> issues = getRepository(repositoryName, user, token).listIssues(state).asList();
+        return issues.size();
+    }
+
     private GHRepository getRepository(String name, String user, String token) {
         try {
             return getConnection(token).getUser(user).getRepository(name);
