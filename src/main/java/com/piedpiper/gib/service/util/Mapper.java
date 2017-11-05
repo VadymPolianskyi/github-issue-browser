@@ -1,9 +1,8 @@
 package com.piedpiper.gib.service.util;
 
-import com.piedpiper.gib.protocol.dao.IssueDao;
-import com.piedpiper.gib.protocol.dao.LabelDao;
-import com.piedpiper.gib.protocol.dao.RepositoryDao;
+import com.piedpiper.gib.protocol.dao.*;
 import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueComment;
 import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHRepository;
 import org.modelmapper.ModelMapper;
@@ -29,4 +28,15 @@ public class Mapper {
         repositoryDao.setUserName(repository.getOwnerName());
         return repositoryDao;
     }
+
+    public IssueDetailDao mapIssueDetails(GHIssue issue) {
+        IssueDetailDao issueDetailsDao = mapper.map(issue, IssueDetailDao.class);
+        issueDetailsDao.setOwner(mapRepository(issue.getRepository()));
+        return issueDetailsDao;
+    }
+
+    public CommentDao mapComment(GHIssueComment comment) {
+        return mapper.map(comment, CommentDao.class);
+    }
+
 }
