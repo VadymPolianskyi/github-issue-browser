@@ -1,8 +1,10 @@
 package com.piedpiper.gib.controller;
 
+import com.piedpiper.gib.handler.AllLabelsHandler;
 import com.piedpiper.gib.handler.GetIssuesHandler;
 import com.piedpiper.gib.protocol.GetIssuesRequest;
 import com.piedpiper.gib.protocol.Response;
+import com.piedpiper.gib.protocol.TokenRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,27 +17,34 @@ import static org.kohsuke.github.GHIssueState.OPEN;
 public class IssueController {
 
     private final GetIssuesHandler getIssuesHandler;
+    private final AllLabelsHandler allLabelsHandler;
 
     @Autowired
-    public IssueController(GetIssuesHandler getIssuesHandler) {
+    public IssueController(GetIssuesHandler getIssuesHandler, AllLabelsHandler allLabelsHandler) {
         this.getIssuesHandler = getIssuesHandler;
+        this.allLabelsHandler = allLabelsHandler;
     }
 
-    @PostMapping("/issues/{user}/{repoName}")
-    public Response getAllIssues(@PathVariable String repoName, @PathVariable String user,
-                                 @RequestParam("size") int size, @RequestParam("page") int page) {
-        return getIssuesHandler.handle(new GetIssuesRequest(repoName,user, page, size, ALL));
+    @PostMapping("/issues")
+    public Response getAllIssues(@RequestBody GetIssuesRequest request) {
+        request.setState(ALL);
+        return getIssuesHandler.handle(request);
     }
 
-    @PostMapping("/issues/open/{user}/{repoName}")
-    public Response getOpenIssues(@PathVariable String repoName, @PathVariable String user,
-                                  @RequestParam("size") int size, @RequestParam("page") int page) {
-        return getIssuesHandler.handle(new GetIssuesRequest(repoName,user, page, size, OPEN));
+    @PostMapping("/issues/open")
+    public Response getOpenIssues(@RequestBody GetIssuesRequest request) {
+        request.setState(OPEN);
+        return getIssuesHandler.handle(request);
     }
 
-    @PostMapping("/issues/closed/{user}/{repoName}")
-    public Response getClosedIssues(@PathVariable String repoName, @PathVariable String user,
-                                    @RequestParam("size") int size, @RequestParam("page") int page) {
-        return getIssuesHandler.handle(new GetIssuesRequest(repoName,user, page, size, CLOSED));
+    @PostMapping("/issues/closed")
+    public Response getClosedIssues(@RequestBody GetIssuesRequest request) {
+        request.setState(CLOSED);
+        return getIssuesHandler.handle(request);
+    }
+
+    @PostMapping("/issues/labels")
+    public Response getLabels(@RequestBody TokenRequest request) {
+        return allLabelsHandler.handle(request);
     }
 }

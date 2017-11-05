@@ -9,6 +9,18 @@ import java.util.List;
 @Service
 public class GithubService {
 
+    public List<GHLabel> labels (String token) {
+        try {
+            return getConnection(token)
+                    .getUser("facebook")
+                    .getRepository("react")
+                    .listLabels()
+                    .asList();
+        } catch (IOException e) {
+            throw new RuntimeException();//todo: create custom LabelsGettingException
+        }
+    }
+
     public List<GHIssue> getIssues(String user, String repositoryName, GHIssueState state, int page, int size, String token) {
         PagedIterator<GHIssue> iterator = getRepository(repositoryName, user, token).listIssues(state)._iterator(size);
         int counter = 0;
