@@ -43,7 +43,7 @@ public class IssueController {
         return getIssuesHandler.handle(request);
     }
 
-    @PostMapping("/issues/labels")
+    @PostMapping("/labels")
     public Response getLabels(@RequestBody TokenRequest request) {
         return allLabelsHandler.handle(request);
     }
