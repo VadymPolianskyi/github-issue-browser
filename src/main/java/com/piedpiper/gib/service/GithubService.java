@@ -22,10 +22,17 @@ public class GithubService {
 
     private GHRepository getRepository(String name, String user, String token) {
         try {
-            GitHub github = GitHub.connectUsingOAuth(token);
-            return github.getUser(user).getRepository(name);
+            return getConnection(token).getUser(user).getRepository(name);
         } catch (IOException e) {
             throw new RuntimeException();//todo:create custom RepositoryNotFoundException
+        }
+    }
+
+    private GitHub getConnection(String token) {
+        try {
+            return GitHub.connectUsingOAuth(token);
+        } catch (IOException e) {
+            throw new RuntimeException();//todo:create custom ConnectionEstablishingException
         }
     }
 }
