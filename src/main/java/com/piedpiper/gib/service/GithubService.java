@@ -5,9 +5,23 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import static java.util.Arrays.asList;
 
 @Service
 public class GithubService {
+
+    public String login(String username, String password) {
+        try {
+            GitHub gitHub = new GitHubBuilder().withPassword(username, password).build();
+            return gitHub
+                    .createToken(asList(GHAuthorization.REPO_STATUS, GHAuthorization.REPO),
+                    "Pied Piper login!", null)
+                    .getToken();
+        } catch (IOException e) {
+            throw new RuntimeException();//todo: create custom UserLoginException
+        }
+
+    }
 
     public List<GHLabel> labels (String token) {
         try {
