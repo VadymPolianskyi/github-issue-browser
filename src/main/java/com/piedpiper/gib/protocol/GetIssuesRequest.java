@@ -12,7 +12,7 @@ import org.kohsuke.github.GHIssueState;
 @AllArgsConstructor
 public @Data class GetIssuesRequest extends TokenRequest {
 
-    private String repositoryName;
+    private String repository;
     private String user;
     private int page;
     private int size;

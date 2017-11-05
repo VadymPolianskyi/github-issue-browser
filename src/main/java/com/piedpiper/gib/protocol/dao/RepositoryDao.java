@@ -1,5 +1,7 @@
 package com.piedpiper.gib.protocol.dao;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +16,7 @@ class RepositoryDao {
     private String name;
     private String full_name;
     private String html_url;
-    private String ownerName;
+
+    @JsonProperty("owner")
+    private String userName;
 }

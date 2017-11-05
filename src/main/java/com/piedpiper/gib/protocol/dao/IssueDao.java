@@ -12,11 +12,9 @@ import java.util.List;
 public @Data
 class IssueDao implements Serializable {
 
-    private RepositoryDao owner;
+    RepositoryDao owner;
 
     private String id;
-    private String name;
-
     private String state;
     private int number;
     private String closed_at;

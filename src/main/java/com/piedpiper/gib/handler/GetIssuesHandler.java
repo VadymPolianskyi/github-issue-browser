@@ -6,7 +6,6 @@ import com.piedpiper.gib.protocol.dao.IssueDao;
 import com.piedpiper.gib.service.GithubService;
 import com.piedpiper.gib.service.util.Mapper;
 import lombok.extern.slf4j.Slf4j;
-import org.kohsuke.github.GHIssue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,14 +28,14 @@ public class GetIssuesHandler implements Handler<GetIssuesRequest, GetIssuesResp
     @Override
     public GetIssuesResponse handle(GetIssuesRequest request) {
         List<IssueDao> issues = githubService
-                .getIssues(request.getUser(), request.getRepositoryName(),
+                .getIssues(request.getUser(), request.getRepository(),
                         request.getState(), request.getPage(), request.getSize(), request.getToken())
                 .stream()
                 .map(mapper::mapIssue)
                 .collect(Collectors.toList());
 
 
-        log.info("Returned issues of repository with name '{}'.", request.getRepositoryName());
+        log.info("Returned issues of repository with name '{}'.", request.getRepository());
         return new GetIssuesResponse(issues);
     }
 }
