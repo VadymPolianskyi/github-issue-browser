@@ -42,9 +42,9 @@ public class GithubService {
         }
     }
 
-    public GHIssue getIssueById(int issueId, String user, String repositoryName, String token) {
+    public GHIssue getIssueById(int issueNumber, String user, String repositoryName, String token) {
         try {
-            return getRepository(repositoryName, user, token).getIssue(issueId);
+            return getRepository(repositoryName, user, token).getIssue(issueNumber);
         } catch (IOException e) {
             throw new RuntimeException(e.getCause()); //todo: create custom IssueNotFoundException
         }
