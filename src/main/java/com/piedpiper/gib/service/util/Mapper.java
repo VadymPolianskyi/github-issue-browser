@@ -17,7 +17,7 @@ public class Mapper {
 
     public IssueDao mapIssue(GHIssue issue) {
         IssueDao issueDao = mapper.map(issue, IssueDao.class);
-        issueDao.setOwner(mapRepository(issue.getRepository()));
+//        issueDao.setOwner(mapRepository(issue.getRepository()));
         log.debug("Mapped issue dao with number {}", issue.getNumber());
         return issueDao;
     }
@@ -35,7 +35,7 @@ public class Mapper {
 
     public IssueDetailDao mapIssueDetails(GHIssue issue) {
         IssueDetailDao issueDetailsDao = mapper.map(issue, IssueDetailDao.class);
-        issueDetailsDao.setOwner(mapRepository(issue.getRepository()));
+//        issueDetailsDao.setOwner(mapRepository(issue.getRepository()));
         log.debug("Mapped issue details dao of issue with number", issue.getNumber());
         return issueDetailsDao;
     }
