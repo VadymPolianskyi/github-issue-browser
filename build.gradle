@@ -52,5 +52,5 @@ compileGroovy {
 	groovyOptions.javaAnnotationProcessing = true
 }
 
-task stage(dependsOn: ['build', 'clean'])
+task stage(dependsOn: ['build', 'clean', 'compileGroovy'])
 build.mustRunAfter clean
