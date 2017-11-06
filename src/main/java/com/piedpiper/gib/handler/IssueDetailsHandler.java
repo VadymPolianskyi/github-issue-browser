@@ -6,7 +6,7 @@ import com.piedpiper.gib.protocol.dao.CommentDao;
 import com.piedpiper.gib.protocol.dao.IssueDetailDao;
 import com.piedpiper.gib.protocol.exception.CommentGettingException;
 import com.piedpiper.gib.service.GithubService;
-import com.piedpiper.gib.service.StringUtil;
+import com.piedpiper.gib.service.util.StringUtil;
 import com.piedpiper.gib.service.util.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHIssue;
@@ -35,6 +35,8 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
 
     @Override
     public IssueDetailsResponse handle(IssueDetailsRequest request) {
+        log.debug("Got request for getting details of issue with number {} (repo: {}, user: {}).", request.getIssueNumber(), request.getRepository(), request.getUser());
+
         GHIssue issue = githubService.getIssueById(request.getIssueNumber(), request.getUser(),
                 request.getRepository(), request.getToken());
 
@@ -56,7 +58,7 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
         issueDetailDao.setRelevantPRs(relevantPRs);
         issueDetailDao.setRelevantIssues(relevantIssues);
 
-        log.info("Got information about issue with title '{}'", issue.getTitle());
+        log.info("Returned information about issue with title '{}'", issue.getTitle());
         return new IssueDetailsResponse(issueDetailDao);
     }
 
@@ -70,6 +72,7 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
                     })
                     .collect(Collectors.toList());
         } catch (IOException e) {
+            log.error("CommentGettingException: Problems with getting of comments of '{}' issue", issue.getNumber());
             throw new CommentGettingException("Problems with getting of comments of " + issue.getNumber() + " issue.", e.getCause());
         }
     }
