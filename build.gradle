@@ -23,6 +23,10 @@ repositories {
 	mavenCentral()
 }
 
+compileGroovy {
+	groovyOptions.javaAnnotationProcessing = true
+}
+
 dependencies {
 	//spring boot
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.4.RELEASE'
