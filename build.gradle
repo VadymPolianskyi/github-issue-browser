@@ -44,8 +44,6 @@ dependencies {
 	//github util
 	compile group: 'org.kohsuke', name: 'github-api', version: '1.90'
 
-	//test
-	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
 }
 
 compileGroovy {
