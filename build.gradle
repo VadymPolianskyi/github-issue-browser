@@ -1,23 +1,19 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.8.RELEASE'
-	}
 	repositories {
-		mavenCentral()
 		maven {
 			url "https://plugins.gradle.org/m2/"
 		}
+		mavenCentral()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath "gradle.plugin.org.jenkins-ci.tools:gradle-jpi-plugin:0.24.0"
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
 apply plugin: "org.jenkins-ci.jpi"
+apply plugin: 'idea'
 
 group = 'com.piedpiper.gib'
 version = '0.0.1-SNAPSHOT'
@@ -27,25 +23,27 @@ repositories {
 	mavenCentral()
 }
 
-bootRepackage {
-	enabled = false
-}
-
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-websocket')
+	//spring boot
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.4.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.4.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.5.4.RELEASE'
+
+	//db
 	compile group: 'com.h2database', name: 'h2', version: '1.4.196'
 
-
+    //json
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.0'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.7'
 
 
+	//utils
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
+	compileOnly "org.projectlombok:lombok:1.16.8"
 
+	//github util
 	compile group: 'org.kohsuke', name: 'github-api', version: '1.90'
 
-	compileOnly('org.projectlombok:lombok')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	//test
+	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
 }

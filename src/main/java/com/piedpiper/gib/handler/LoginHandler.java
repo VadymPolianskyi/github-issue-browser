@@ -20,6 +20,7 @@ public class LoginHandler implements Handler<LoginRequest, LoginResponse>{
 
     @Override
     public LoginResponse handle(LoginRequest request) {
+        log.debug("Got login request from user {}", request.getUsername());
         String token = githubService.login(request.getUsername(), request.getPassword());
 
         log.info("Login user with username {}", request.getUsername());

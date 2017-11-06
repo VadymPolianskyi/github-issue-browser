@@ -1,5 +1,6 @@
-package com.piedpiper.gib.service;
+package com.piedpiper.gib.service.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@Slf4j
 public class StringUtil {
 
 
@@ -36,6 +38,7 @@ public class StringUtil {
                     urlMatcher.end(0)));
         }
 
+        log.info("Extracted body of comment and found {} urls.", containedUrls.size());
         return containedUrls;
     }
 }

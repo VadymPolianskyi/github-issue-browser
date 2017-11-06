@@ -27,6 +27,9 @@ public class GetIssuesHandler implements Handler<GetIssuesRequest, GetIssuesResp
 
     @Override
     public GetIssuesResponse handle(GetIssuesRequest request) {
+        log.debug("Got request for getting issues of {} {} repository of {} user. (page: {}, size: {})",
+               request.getState(), request.getRepository(), request.getUser(), request.getPage(), request.getSize());
+
         List<IssueDao> issues = githubService
                 .getIssues(request.getUser(), request.getRepository(),
                         request.getState(), request.getPage(), request.getSize(), request.getToken())
@@ -34,11 +37,7 @@ public class GetIssuesHandler implements Handler<GetIssuesRequest, GetIssuesResp
                 .map(mapper::mapIssue)
                 .collect(Collectors.toList());
 
-
-        int issuesCount = githubService.getIssuesCount(request.getUser(), request.getRepository(),
-                request.getState(), request.getToken());
-
         log.info("Returned issues of repository with name '{}'.", request.getRepository());
-        return new GetIssuesResponse(issues, issuesCount);
+        return new GetIssuesResponse(issues);
     }
 }
