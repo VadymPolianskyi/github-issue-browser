@@ -11,7 +11,6 @@ import java.io.Serializable;
 public @Data
 class CommentDao implements Serializable {
     private String body;
-    private String gravatar_id;
+    private String avatar_url;
     private String author;
-    private IssueDao issueDao;
 }
