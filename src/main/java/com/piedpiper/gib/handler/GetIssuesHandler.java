@@ -37,12 +37,7 @@ public class GetIssuesHandler implements Handler<GetIssuesRequest, GetIssuesResp
                 .map(mapper::mapIssue)
                 .collect(Collectors.toList());
 
-
-        int issuesCount = githubService.getIssuesCount(request.getUser(), request.getRepository(),
-                request.getState(), request.getToken());
-
-
-        log.info("Returned issues of repository with name '{}'. Issues count: {}", request.getRepository(), issuesCount);
-        return new GetIssuesResponse(issues, issuesCount);
+        log.info("Returned issues of repository with name '{}'.", request.getRepository());
+        return new GetIssuesResponse(issues);
     }
 }
