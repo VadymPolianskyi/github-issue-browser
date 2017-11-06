@@ -4,6 +4,7 @@ import com.piedpiper.gib.protocol.IssueDetailsRequest;
 import com.piedpiper.gib.protocol.IssueDetailsResponse;
 import com.piedpiper.gib.protocol.dao.CommentDao;
 import com.piedpiper.gib.protocol.dao.IssueDetailDao;
+import com.piedpiper.gib.protocol.exception.CommentGettingException;
 import com.piedpiper.gib.service.GithubService;
 import com.piedpiper.gib.service.StringUtil;
 import com.piedpiper.gib.service.util.Mapper;
@@ -69,7 +70,7 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
                     })
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new RuntimeException(e);//todo: create custom CommentGettingException
+            throw new CommentGettingException("Problems with getting of comments of " + issue.getNumber() + " issue.", e.getCause());
         }
     }
 }
