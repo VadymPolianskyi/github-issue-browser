@@ -1,5 +1,6 @@
 package com.piedpiper.gib.service;
 
+import com.piedpiper.gib.protocol.exception.*;
 import org.kohsuke.github.*;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class GithubService {
             }
             return token;
         } catch (IOException e) {
-            throw new RuntimeException(e.getCause());//todo: create custom UserLoginException
+            throw new UserLoginException("Can't login user with username '"+username+"'.", e.getCause());
         }
 
     }
@@ -38,7 +39,7 @@ public class GithubService {
                     .listLabels()
                     .asList();
         } catch (IOException e) {
-            throw new RuntimeException();//todo: create custom LabelsGettingException
+            throw new LabelsGettingException("Can't get labels from github service.", e.getCause());
         }
     }
 
@@ -46,7 +47,7 @@ public class GithubService {
         try {
             return getRepository(repositoryName, user, token).getIssue(issueNumber);
         } catch (IOException e) {
-            throw new RuntimeException(e.getCause()); //todo: create custom IssueNotFoundException
+            throw new IssueNotFoundException("Issue with number " + issueNumber + " is not found", e.getCause());
         }
     }
 
@@ -58,7 +59,7 @@ public class GithubService {
             iterator.nextPage();
             counter++;
         }
-        throw new RuntimeException(); //todo: create custom IssuesNotFoundException
+        throw new IssuesNotFoundException("Issues on page " + page + " with size " + size + "are not found.");
     }
 
     public int getIssuesCount(String user, String repositoryName, GHIssueState state, String token) {
@@ -70,7 +71,7 @@ public class GithubService {
         try {
             return getConnection(token).getUser(user).getRepository(name);
         } catch (IOException e) {
-            throw new RuntimeException(e);//todo:create custom RepositoryNotFoundException
+            throw new RepositoryNotFoundException("Can't find repository with name '" + name + "' of user " + user,e.getCause());
         }
     }
 
@@ -78,7 +79,7 @@ public class GithubService {
         try {
             return GitHub.connectUsingOAuth(token);
         } catch (IOException e) {
-            throw new RuntimeException(e);//todo:create custom ConnectionEstablishingException
+            throw new ConnectionEstablishingException("Can't connect github account with this token.", e.getCause());
         }
     }
 }
