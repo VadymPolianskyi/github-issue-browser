@@ -10,10 +10,13 @@ import com.piedpiper.gib.service.util.StringUtil;
 import com.piedpiper.gib.service.util.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.MarkdownMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,9 +44,12 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
                 request.getRepository(), request.getToken());
 
         IssueDetailDao issueDetailDao = mapper.mapIssueDetails(issue);
+        issueDetailDao.setBody(markdownBody(issueDetailDao.getBody(), issue.getRepository()));
 
+        //custom injection user's avatar
+        try { issueDetailDao.getUser().setAvatar_url(issue.getUser().getAvatarUrl());} catch (IOException e) { e.printStackTrace(); }
 
-        List<CommentDao> commentDaos = getComments(issue);
+        List<CommentDao> commentDaos = getComments(issue, request.getToken());
         issueDetailDao.setCommentsList(commentDaos);
 
         //searching for relevant prs
@@ -51,9 +57,12 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
         List<String> relevantPRs = new ArrayList<>();
 
         commentDaos.forEach(comment -> {
+            comment.setBody(markdownBody(comment.getBody(),issue.getRepository()));
+
             relevantIssues.addAll(stringUtil.extractIssuesUrls(comment.getBody()));
             relevantPRs.addAll(stringUtil.extractPrUrls(comment.getBody()));
         });
+
 
         issueDetailDao.setRelevantPRs(relevantPRs);
         issueDetailDao.setRelevantIssues(relevantIssues);
@@ -62,18 +71,38 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
         return new IssueDetailsResponse(issueDetailDao);
     }
 
-    private List<CommentDao> getComments(GHIssue issue) {
+    private List<CommentDao> getComments(GHIssue issue, String token) {
         try {
             return issue.getComments().stream()
                     .map(comment -> {
                         CommentDao commentDao = mapper.mapComment(comment);
-                        try { commentDao.setAuthor(comment.getUser().getName()); } catch (IOException ignored) {}
+                        try { commentDao.setAuthor(comment.getUser().getName());
+                        commentDao.setAvatar_url(comment.getUser().getAvatarUrl());} catch (IOException ignored) {}
                         return commentDao;
                     })
                     .collect(Collectors.toList());
         } catch (IOException e) {
             log.error("CommentGettingException: Problems with getting of comments of '{}' issue", issue.getNumber());
             throw new CommentGettingException("Problems with getting of comments of " + issue.getNumber() + " issue.", e.getCause());
+        }
+    }
+
+    private String markdownBody(String body, GHRepository repository) {
+        try {
+            Reader reader = repository.renderMarkdown(body, MarkdownMode.GFM);
+
+            StringBuilder html = new StringBuilder();
+            int data = reader.read();
+            while(data != -1){
+                char theChar = (char) data;
+                html.append(theChar);
+                data = reader.read();
+            }
+
+            reader.close();
+            return html.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getCause());//todo: create custom CommentMarkdownException
         }
     }
 }
