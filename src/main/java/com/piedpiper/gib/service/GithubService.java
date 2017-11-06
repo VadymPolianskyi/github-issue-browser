@@ -57,7 +57,7 @@ public class GithubService {
     }
 
     public List<GHIssue> getIssues(String user, String repositoryName, GHIssueState state, int page, int size, String token) {
-        PagedIterator<GHIssue> iterator = getRepository(repositoryName, user, token).listIssues(state)._iterator(size);
+        PagedIterator<GHIssue> iterator = getConnection(token).searchIssues().q("is:issue").q("repo:" + user + "/" + repositoryName).isOpen().list()._iterator(size);
         int counter = 0;
         while (page > counter || iterator.hasNext()) {
             if (page == counter) return  iterator.nextPage();
@@ -66,11 +66,6 @@ public class GithubService {
         }
         log.error("IssuesNotFoundException: Issues of repository {} of user {} on page {} with size {} are not found.", repositoryName, user, page, size);
         throw new IssuesNotFoundException("Issues on page " + page + " with size " + size + "are not found.");
-    }
-
-    public int getIssuesCount(String user, String repositoryName, GHIssueState state, String token) {
-        List<GHIssue> issues = getRepository(repositoryName, user, token).listIssues(state).asList();
-        return issues.size();
     }
 
     private GHRepository getRepository(String name, String user, String token) {
