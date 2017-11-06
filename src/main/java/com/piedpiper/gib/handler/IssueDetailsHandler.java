@@ -49,7 +49,7 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
         //custom injection user's avatar
         try { issueDetailDao.getUser().setAvatar_url(issue.getUser().getAvatarUrl());} catch (IOException e) { e.printStackTrace(); }
 
-        List<CommentDao> commentDaos = getComments(issue, request.getToken());
+        List<CommentDao> commentDaos = getComments(issue);
         issueDetailDao.setCommentsList(commentDaos);
 
         //searching for relevant prs
@@ -67,14 +67,11 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
         issueDetailDao.setRelevantPRs(relevantPRs);
         issueDetailDao.setRelevantIssues(relevantIssues);
 
-        int closedIssues = issue.getMilestone().getClosedIssues();
-        int openedIssues = issue.getMilestone().getOpenIssues();
-
         log.info("Returned information about issue with title '{}'", issue.getTitle());
-        return new IssueDetailsResponse(issueDetailDao, closedIssues,openedIssues);
+        return new IssueDetailsResponse(issueDetailDao);
     }
 
-    private List<CommentDao> getComments(GHIssue issue, String token) {
+    private List<CommentDao> getComments(GHIssue issue) {
         try {
             return issue.getComments().stream()
                     .map(comment -> {
