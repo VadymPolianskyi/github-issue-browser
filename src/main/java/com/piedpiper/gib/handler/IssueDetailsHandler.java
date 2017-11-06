@@ -67,8 +67,11 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
         issueDetailDao.setRelevantPRs(relevantPRs);
         issueDetailDao.setRelevantIssues(relevantIssues);
 
+        int closedIssues = issue.getMilestone().getClosedIssues();
+        int openedIssues = issue.getMilestone().getOpenIssues();
+
         log.info("Returned information about issue with title '{}'", issue.getTitle());
-        return new IssueDetailsResponse(issueDetailDao);
+        return new IssueDetailsResponse(issueDetailDao, closedIssues,openedIssues);
     }
 
     private List<CommentDao> getComments(GHIssue issue, String token) {

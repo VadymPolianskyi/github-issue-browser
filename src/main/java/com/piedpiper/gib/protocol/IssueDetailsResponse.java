@@ -15,4 +15,6 @@ class IssueDetailsResponse extends Response{
 
     @JsonProperty("issue_detail")
     private IssueDetailDao issueDetail;
+    private int closed;
+    private int open;
 }
