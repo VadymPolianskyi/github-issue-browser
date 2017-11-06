@@ -57,14 +57,15 @@ public class GithubService {
     }
 
     public List<GHIssue> getIssues(String user, String repositoryName, GHIssueState state, int page, int size, String token) {
-        String strState = state.toString().toLowerCase();
+        GHIssueSearchBuilder searchBuilder = getDefaultSearchBuilder(user, repositoryName, token);
 
-        PagedIterator<GHIssue> iterator = getDefaultSearchBuilder(user, repositoryName, token)
-                .q("is:" + strState)
-                .list()._iterator(size);
+        if (state.equals(GHIssueState.OPEN)) searchBuilder.isOpen();
+        if (state.equals(GHIssueState.CLOSED)) searchBuilder.isClosed();
+
+        PagedIterator<GHIssue> iterator = searchBuilder.list()._iterator(size);
 
         int counter = 0;
-        while (page > counter || iterator.hasNext()) {
+        while (page >= counter && iterator.hasNext()) {
             if (page == counter) return  iterator.nextPage();
             iterator.nextPage();
             counter++;
