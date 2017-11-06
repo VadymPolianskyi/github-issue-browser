@@ -1,6 +1,7 @@
 package com.piedpiper.gib.service;
 
 import com.piedpiper.gib.protocol.exception.*;
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.*;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 @Service
+@Slf4j
 public class GithubService {
 
     public String login(String username, String password) {
@@ -26,6 +28,7 @@ public class GithubService {
             }
             return token;
         } catch (IOException e) {
+            log.error("UserLoginException: Can't login user with username '{}'.", username);
             throw new UserLoginException("Can't login user with username '"+username+"'.", e.getCause());
         }
 
@@ -39,6 +42,7 @@ public class GithubService {
                     .listLabels()
                     .asList();
         } catch (IOException e) {
+            log.error("LabelsGettingException: Can't get labels from github service.");
             throw new LabelsGettingException("Can't get labels from github service.", e.getCause());
         }
     }
@@ -47,6 +51,7 @@ public class GithubService {
         try {
             return getRepository(repositoryName, user, token).getIssue(issueNumber);
         } catch (IOException e) {
+            log.error("IssueNotFoundException: Issue with number {} in repository {} of user {} is not found", issueNumber, repositoryName, user);
             throw new IssueNotFoundException("Issue with number " + issueNumber + " is not found", e.getCause());
         }
     }
@@ -59,6 +64,7 @@ public class GithubService {
             iterator.nextPage();
             counter++;
         }
+        log.error("IssuesNotFoundException: Issues of repository {} of user {} on page {} with size {} are not found.", repositoryName, user, page, size);
         throw new IssuesNotFoundException("Issues on page " + page + " with size " + size + "are not found.");
     }
 
@@ -71,6 +77,7 @@ public class GithubService {
         try {
             return getConnection(token).getUser(user).getRepository(name);
         } catch (IOException e) {
+            log.error("RepositoryNotFoundException: Can't find repository with name '{}' of user {}.", name, user);
             throw new RepositoryNotFoundException("Can't find repository with name '" + name + "' of user " + user,e.getCause());
         }
     }
@@ -79,6 +86,7 @@ public class GithubService {
         try {
             return GitHub.connectUsingOAuth(token);
         } catch (IOException e) {
+            log.error("Can't connect github account with token {}********.", token.substring(0,4));
             throw new ConnectionEstablishingException("Can't connect github account with this token.", e.getCause());
         }
     }
