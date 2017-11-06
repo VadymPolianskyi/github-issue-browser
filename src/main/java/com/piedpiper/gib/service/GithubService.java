@@ -57,7 +57,12 @@ public class GithubService {
     }
 
     public List<GHIssue> getIssues(String user, String repositoryName, GHIssueState state, int page, int size, String token) {
-        PagedIterator<GHIssue> iterator = getConnection(token).searchIssues().q("is:issue").q("repo:" + user + "/" + repositoryName).isOpen().list()._iterator(size);
+        String strState = state.toString().toLowerCase();
+
+        PagedIterator<GHIssue> iterator = getDefaultSearchBuilder(user, repositoryName, token)
+                .q("is:" + strState)
+                .list()._iterator(size);
+
         int counter = 0;
         while (page > counter || iterator.hasNext()) {
             if (page == counter) return  iterator.nextPage();
@@ -68,7 +73,19 @@ public class GithubService {
         throw new IssuesNotFoundException("Issues on page " + page + " with size " + size + "are not found.");
     }
 
-    private GHRepository getRepository(String name, String user, String token) {
+    public List<GHIssue> getListIssues(String user, String repository,String token) {
+        return getDefaultSearchBuilder(user, repository, token)
+                .list().asList();
+    }
+
+    private GHIssueSearchBuilder getDefaultSearchBuilder(String user, String repository, String token) {
+        return getConnection(token)
+                .searchIssues()
+                .q("is:issue")
+                .q("repo:" + user + "/" + repository);
+    }
+
+    public GHRepository getRepository(String name, String user, String token) {
         try {
             return getConnection(token).getUser(user).getRepository(name);
         } catch (IOException e) {
@@ -77,7 +94,7 @@ public class GithubService {
         }
     }
 
-    private GitHub getConnection(String token) {
+    public GitHub getConnection(String token) {
         try {
             return GitHub.connectUsingOAuth(token);
         } catch (IOException e) {
