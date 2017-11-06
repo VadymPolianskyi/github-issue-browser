@@ -4,16 +4,20 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "gradle.plugin.org.jenkins-ci.tools:gradle-jpi-plugin:0.24.0"
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
+apply plugin: "org.jenkins-ci.jpi"
 
 group = 'com.piedpiper.gib'
 version = '0.0.1-SNAPSHOT'
@@ -23,8 +27,8 @@ repositories {
 	mavenCentral()
 }
 
-configurations {
-	providedRuntime
+bootRepackage {
+	enabled = false
 }
 
 dependencies {
@@ -36,8 +40,6 @@ dependencies {
 
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.0'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.7'
-	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: '2.8.7'
-	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-databind', version: '2.8.7'
 
 
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
