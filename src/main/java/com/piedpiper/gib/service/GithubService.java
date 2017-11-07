@@ -33,17 +33,6 @@ public class GithubService {
         }
     }
 
-    public void logout(String token) {
-        try {
-            GitHub gitHub = GitHub.connectUsingOAuth(token);
-            GHAuthorization authorization = gitHub.checkAuth("a7084dcfd8385fcd4966", token);
-            gitHub.deleteAuth(authorization.getId());
-        } catch (IOException e) {
-            throw new RuntimeException(e.getCause());//todo: create custom LogoutException
-        }
-    }
-
-
     public List<GHLabel> labels (String token) {
         try {
             return getConnection(token)
