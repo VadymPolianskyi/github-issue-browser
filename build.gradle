@@ -15,9 +15,6 @@ buildscript {
 	}
 }
 
-compileGroovy {
-	groovyOptions.javaAnnotationProcessing = true
-}
 
 apply plugin: 'java'
 apply plugin: "org.jenkins-ci.jpi"
