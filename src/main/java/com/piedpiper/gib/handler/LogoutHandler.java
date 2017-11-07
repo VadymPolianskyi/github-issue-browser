@@ -24,6 +24,7 @@ public class LogoutHandler implements Handler<TokenRequest, Response> {
 
     @Override
     public Response handle(TokenRequest request) {
-        return null;
+        githubService.logout(request.getToken());
+        return new Response();
     }
 }
