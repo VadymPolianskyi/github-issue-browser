@@ -1,19 +1,46 @@
 buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
 	repositories {
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
+		maven { url 'https://repo.spring.io/libs-snapshot' }
+		maven { url "https://plugins.gradle.org/m2/" }
 		mavenCentral()
 	}
 	dependencies {
 		classpath "gradle.plugin.org.jenkins-ci.tools:gradle-jpi-plugin:0.24.0"
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'war'
 apply plugin: "org.jenkins-ci.jpi"
-apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+compileGroovy {
+	groovyOptions.javaAnnotationProcessing = true
+}
+
+bootRepackage {
+	withJarTask = jar
+	mainClass = 'com.piedpiper.gib.GithubIssueBrowserApplication'
+}
+
+springBoot{
+	mainClass = "com.piedpiper.gib.GithubIssueBrowserApplication"
+	layout = "JAR"
+
+}
+
+jar {
+	baseName = 'github-issue-browser'
+	version = '1.0'
+	manifest {
+		attributes 'Main-Class': 'com.piedpiper.gib.GithubIssueBrowserApplication'
+	}
+}
 
 group = 'com.piedpiper.gib'
 version = '0.0.1-SNAPSHOT'
@@ -23,20 +50,18 @@ repositories {
 	mavenCentral()
 }
 
-compileGroovy {
-	groovyOptions.javaAnnotationProcessing = true
-}
+
 
 dependencies {
 	//spring boot
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.4.RELEASE'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.4.RELEASE'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.5.4.RELEASE'
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile("org.springframework.boot:spring-boot-starter-websocket")
 
 	//db
 	compile group: 'com.h2database', name: 'h2', version: '1.4.196'
 
-    //json
+	//json
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.0'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.7'
 
@@ -49,5 +74,9 @@ dependencies {
 	compile group: 'org.kohsuke', name: 'github-api', version: '1.90'
 
 	//test
-	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
+	compile("org.springframework.boot:spring-boot-starter-test")
+
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
