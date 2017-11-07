@@ -1,0 +1,23 @@
+= Getting Started With Spring REST Docs
+
+== link:index.html[BACK]
+
+<<login>> +
+
+[#login]
+== Login
+
+=== Request example
+include::{snippets}/login/http-request.adoc[]
+=== Request fields
+include::{snippets}/login/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/login/http-response.adoc[]
+=== Response  fields
+include::{snippets}/login/response-fields.adoc[]
+
+<<login>> +
+
+=== link:index.html[BACK]
+
