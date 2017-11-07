@@ -10,12 +10,12 @@ buildscript {
 	}
 }
 
+apply plugin: 'java'
+apply plugin: "org.jenkins-ci.jpi"
+
 compileGroovy {
 	groovyOptions.javaAnnotationProcessing = true
 }
-
-apply plugin: 'java'
-apply plugin: "org.jenkins-ci.jpi"
 
 group = 'com.piedpiper.gib'
 version = '0.0.1-SNAPSHOT'
