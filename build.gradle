@@ -11,17 +11,12 @@ buildscript {
 }
 
 
-compileGroovy {
-	groovyOptions.javaAnnotationProcessing = false
-}
 
-task stage(dependsOn: ['build', 'clean', 'compileGroovy'])
+task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
 
 apply plugin: 'java'
-apply plugin: 'war'
 apply plugin: "org.jenkins-ci.jpi"
-apply plugin: 'idea'
 
 group = 'com.piedpiper.gib'
 version = '0.0.1-SNAPSHOT'
