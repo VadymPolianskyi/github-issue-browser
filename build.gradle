@@ -10,6 +10,14 @@ buildscript {
 	}
 }
 
+
+compileGroovy {
+	groovyOptions.javaAnnotationProcessing = false
+}
+
+task stage(dependsOn: ['build', 'clean', 'compileGroovy'])
+build.mustRunAfter clean
+
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: "org.jenkins-ci.jpi"
@@ -47,10 +55,3 @@ dependencies {
 	//test
 	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
 }
-
-compileGroovy {
-	groovyOptions.javaAnnotationProcessing = false
-}
-
-task stage(dependsOn: ['build', 'clean', 'compileGroovy'])
-build.mustRunAfter clean
