@@ -5,6 +5,7 @@ import com.piedpiper.gib.protocol.IssueDetailsResponse;
 import com.piedpiper.gib.protocol.dao.CommentDao;
 import com.piedpiper.gib.protocol.dao.IssueDetailDao;
 import com.piedpiper.gib.protocol.exception.CommentGettingException;
+import com.piedpiper.gib.protocol.exception.CommentMarkdownException;
 import com.piedpiper.gib.service.GithubService;
 import com.piedpiper.gib.service.util.StringUtil;
 import com.piedpiper.gib.service.util.Mapper;
@@ -102,7 +103,8 @@ public class IssueDetailsHandler implements Handler<IssueDetailsRequest, IssueDe
             reader.close();
             return html.toString();
         } catch (IOException e) {
-            throw new RuntimeException(e.getCause());//todo: create custom CommentMarkdownException
+            log.error("CommentMarkdownException: Exception when markdown message body:'{}'.", body);
+            throw new CommentMarkdownException("Exception when markdown message body: '" + body + "'",e.getCause());
         }
     }
 }
