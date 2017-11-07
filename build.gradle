@@ -101,5 +101,7 @@ dependencies {
 
 
 
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean
+task stage(dependsOn: ['build', 'asciidoctor', 'test', 'clean'])
+build.mustRunAfter asciidoctor
+asciidoctor.mustRunAfter test
+test.mustRunAfter clean
