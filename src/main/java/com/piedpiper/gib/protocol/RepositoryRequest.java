@@ -1,16 +1,20 @@
 package com.piedpiper.gib.protocol;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * Author: Vadym Polyanski
+ * Date: 07.11.17
+ * Time: 17:08
+ */
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public @Data
-class IssueDetailsRequest extends RepositoryRequest{
-    @JsonProperty("issue_number")
-    private int issueNumber;
+class RepositoryRequest extends TokenRequest{
+    private String user;
+    private String repository;
 }
