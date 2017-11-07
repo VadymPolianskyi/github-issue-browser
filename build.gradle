@@ -49,3 +49,6 @@ dependencies {
 	//test
 	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
