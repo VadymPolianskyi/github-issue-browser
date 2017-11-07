@@ -37,7 +37,7 @@ include::{snippets}/all-issues/response-fields.adoc[]
 
 ...
 [#open]
-== Get all open issues
+== All OPEN issues
 
 === Request example
 include::{snippets}/open-issues/http-request.adoc[]
@@ -51,7 +51,7 @@ include::{snippets}/open-issues/response-fields.adoc[]
 
 ...
 [#closed]
-== Get all open issues
+== All CLOSED issues
 
 === Request example
 include::{snippets}/closed-issues/http-request.adoc[]
@@ -65,7 +65,7 @@ include::{snippets}/closed-issues/response-fields.adoc[]
 
 ...
 [#details]
-== Get all open issues
+== Issue details
 
 === Request example
 include::{snippets}/issues-details/http-request.adoc[]

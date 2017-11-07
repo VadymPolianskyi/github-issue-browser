@@ -1,7 +1,5 @@
-= Getting Started With Spring REST Docs
+= Github issue browser API
 
-== link:login.html[Login]
-== link:issues.html[Issue service]
-== link:util.html[Utils]
-
-== link:index.html[BACK]
+=== link:login.html[Login]
+=== link:issues.html[Issue service]
+=== link:util.html[Utils]
