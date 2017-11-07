@@ -14,4 +14,6 @@ import java.util.List;
 public @Data class GetIssuesResponse extends Response {
 
     private List<IssueDao> issues;
+//    private int closed;
+//    private int open;
 }
