@@ -6,10 +6,12 @@ buildscript {
 		maven { url 'https://repo.spring.io/libs-snapshot' }
 		maven { url "https://plugins.gradle.org/m2/" }
 		mavenCentral()
+		jcenter()
 	}
 	dependencies {
 		classpath "gradle.plugin.org.jenkins-ci.tools:gradle-jpi-plugin:0.24.0"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
 	}
 }
 
@@ -17,11 +19,30 @@ apply plugin: 'java'
 apply plugin: "org.jenkins-ci.jpi"
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.asciidoctor.convert'
 
+group = 'com.piedpiper.gib'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
 
 compileGroovy {
 	groovyOptions.javaAnnotationProcessing = true
 }
+
+//docs start --------------------
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	sourceDir = file('src/docs/asciidoc')
+	inputs.dir snippetsDir
+}
+//docs end --------------------
 
 bootRepackage {
 	withJarTask = jar
@@ -31,10 +52,13 @@ bootRepackage {
 springBoot{
 	mainClass = "com.piedpiper.gib.GithubIssueBrowserApplication"
 	layout = "JAR"
-
 }
 
 jar {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
 	baseName = 'github-issue-browser'
 	version = '1.0'
 	manifest {
@@ -42,15 +66,9 @@ jar {
 	}
 }
 
-group = 'com.piedpiper.gib'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
 repositories {
 	mavenCentral()
 }
-
-
 
 dependencies {
 	//spring boot
@@ -76,7 +94,12 @@ dependencies {
 	//test
 	compile("org.springframework.boot:spring-boot-starter-test")
 
+	//docs
+	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.1.RELEASE'
 }
+
+
 
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
