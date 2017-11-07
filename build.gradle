@@ -54,10 +54,6 @@ repositories {
 
 dependencies {
 	//spring boot
-//	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.4.RELEASE'
-//	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.4.RELEASE'
-//	compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.5.4.RELEASE'
-
 	compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	compile("org.springframework.boot:spring-boot-starter-websocket")
@@ -78,7 +74,6 @@ dependencies {
 	compile group: 'org.kohsuke', name: 'github-api', version: '1.90'
 
 	//test
-//	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE'
 	compile("org.springframework.boot:spring-boot-starter-test")
 
 }
