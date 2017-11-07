@@ -12,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public @Data
 class FeatureIntegrationResponse extends Response {
-    private List<Integer> days;
     private Integer avg;
     private Integer count;
+    private Integer max;
+    private Integer min;
 }
