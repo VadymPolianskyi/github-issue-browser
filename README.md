@@ -1,13 +1,12 @@
 # GITHUB ISSUE BROWSER
 ---
----
 The **Github Issue Browser (GIB)** is an application that helps users see the issue in the GitHub repository.
 ## Documentation
----
+
 To obtain Rest API - https://github-issue-browser.herokuapp.com/docs/index.html
 
 ## Getting Started
----
+
 To start a project in Development mode, you should to take a few steps.
 * ###  Step 1: Clone project from GitHub
     Use one of two methods.
@@ -39,12 +38,12 @@ To start a project in Development mode, you should to take a few steps.
     This command runs: `clean -> test -> asciidoctor -> build`
 
  ## Demo
----
+
 You can view the GIB in action by click the button:
 [**`GIB demo`**](https://github-issue-browser.herokuapp.com/)
 
 ## Built With
----
+
 **_Stack of technologies:_**
 - **Spring boot** - building production-ready Spring application;
 - **GitHub API** - getting informations from GitHub;
