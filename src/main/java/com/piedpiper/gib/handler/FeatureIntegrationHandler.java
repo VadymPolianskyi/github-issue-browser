@@ -2,9 +2,10 @@ package com.piedpiper.gib.handler;
 
 import com.piedpiper.gib.protocol.FeatureIntegrationResponse;
 import com.piedpiper.gib.protocol.RepositoryRequest;
+import com.piedpiper.gib.protocol.exception.DayCalculationException;
 import com.piedpiper.gib.service.GithubService;
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHIssue;
-import org.kohsuke.github.GHIssueSearchBuilder;
 import org.kohsuke.github.PagedSearchIterable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class FeatureIntegrationHandler implements Handler<RepositoryRequest, FeatureIntegrationResponse> {
 
     private final GithubService githubService;
@@ -26,6 +28,8 @@ public class FeatureIntegrationHandler implements Handler<RepositoryRequest, Fea
 
     @Override
     public FeatureIntegrationResponse handle(RepositoryRequest request) {
+        log.debug("Got request for calculating of feature integration in repository {} of user {}.",
+                request.getRepository(), request.getUser());
 
         PagedSearchIterable<GHIssue> response = githubService.getAllClosedIssues(request.getUser(), request.getRepository(), request.getToken());
 
@@ -37,18 +41,22 @@ public class FeatureIntegrationHandler implements Handler<RepositoryRequest, Fea
         });
 
         long sum = 0L;
-        for (Integer allDate : allDays) {
-            sum += allDate;
-        }
+        for (Integer allDate : allDays) { sum += allDate; }
 
+
+
+        int max = allDays.stream().mapToInt(i -> i).max().getAsInt();
+        int min = allDays.stream().mapToInt(i -> i).min().getAsInt();
         int count = response.getTotalCount();
         int avg = Math.toIntExact(sum / count);
 
-        return new FeatureIntegrationResponse(allDays, avg, count);
+        log.info("Returned data about feature integration in repository {} of user {}. AVG: {}, " +
+                        "MAX: {}, MIN: {}, COUNT: {}.", request.getRepository(), request.getUser(),
+                avg, max, min, count);
+        return new FeatureIntegrationResponse(avg, count, max, min);
     }
 
     private Integer calculateDays(GHIssue issue) {
-
         try {
             Date closedAt = issue.getClosedAt();
             Date openAt = issue.getCreatedAt();
@@ -58,7 +66,8 @@ public class FeatureIntegrationHandler implements Handler<RepositoryRequest, Fea
 
             return Math.toIntExact(days);
         } catch (IOException e) {
-            throw new RuntimeException(e);//todo: create custom DayCalculationException
+            log.error("DayCalculationException: Exception calculated issue with number {}.", issue.getNumber());
+            throw new DayCalculationException("Exception calculated issue with number " + issue.getNumber(),e.getCause());
         }
     }
 }
