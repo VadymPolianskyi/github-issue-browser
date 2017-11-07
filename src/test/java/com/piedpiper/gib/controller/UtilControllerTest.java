@@ -40,8 +40,7 @@ public class UtilControllerTest  extends DefaultControllerTest {
     public void getAllLabelsTest() throws Exception {
         RepositoryRequest request = new RepositoryRequest("facebook", "react");
         request.setToken("my token");
-        List<Integer> days = Arrays.asList(0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 2, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 2, 0, 0, 5, 0, 4, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 14, 0, 1, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 2, 4, 3, 0, 1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 27, 28, 4, 0, 0, 0, 0, 0, 0, 0, 25, 1, 0, 0, 12, 0, 1, 1, 0, 29, 0, 0, 0, 0, 2, 2, 0, 2, 0, 2, 0, 0, 0, 8, 0, 31, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 9, 5, 5, 5, 5, 5, 10, 6, 0, 2, 3, 6, 0, 6, 3, 3, 6);
-        FeatureIntegrationResponse response = new FeatureIntegrationResponse(days,4,4905);
+        FeatureIntegrationResponse response = new FeatureIntegrationResponse(4,4905, 276, 0);
 
         when(featureIntegrationHandler.handle(any())).thenReturn(response);
 
@@ -62,10 +61,10 @@ public class UtilControllerTest  extends DefaultControllerTest {
                                 fieldWithPath("token").description("OAuth token that user got after login.")
                         ),
                         responseFields(
-                                fieldWithPath("days").description("Count of days from all issues"),
-                                fieldWithPath("days[]").description("One period of issue"),
                                 fieldWithPath("avg").description("avg"),
-                                fieldWithPath("count").description("count of issues")
+                                fieldWithPath("count").description("count of issues"),
+                                fieldWithPath("max").description("max value from periods"),
+                                fieldWithPath("min").description("min value from periods")
                         )));
 
     }
