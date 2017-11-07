@@ -5,7 +5,7 @@
 <<login>> +
 
 [#login]
-== All labels
+== Login
 
 === Request example
 include::{snippets}/login/http-request.adoc[]
