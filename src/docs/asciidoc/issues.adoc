@@ -1,0 +1,88 @@
+= Getting Started With Spring REST Docs
+
+== link:index.html[BACK]
+
+<<labels>> +
+<<issues>> +
+<<open>> +
+<<closed>> +
+<<details>> +
+
+[#labels]
+== All labels
+
+=== Request example
+include::{snippets}/all-labels/http-request.adoc[]
+=== Request fields
+include::{snippets}/all-labels/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/all-labels/http-response.adoc[]
+=== Response  fields
+include::{snippets}/all-labels/response-fields.adoc[]
+
+'''
+[#issues]
+== All issues
+
+=== Request example
+include::{snippets}/all-issues/http-request.adoc[]
+=== Request fields
+include::{snippets}/all-issues/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/all-issues/http-response.adoc[]
+=== Response  fields
+include::{snippets}/all-issues/response-fields.adoc[]
+
+...
+[#open]
+== Get all open issues
+
+=== Request example
+include::{snippets}/open-issues/http-request.adoc[]
+=== Request fields
+include::{snippets}/open-issues/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/open-issues/http-response.adoc[]
+=== Response  fields
+include::{snippets}/open-issues/response-fields.adoc[]
+
+...
+[#closed]
+== Get all open issues
+
+=== Request example
+include::{snippets}/closed-issues/http-request.adoc[]
+=== Request fields
+include::{snippets}/closed-issues/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/closed-issues/http-response.adoc[]
+=== Response  fields
+include::{snippets}/closed-issues/response-fields.adoc[]
+
+...
+[#details]
+== Get all open issues
+
+=== Request example
+include::{snippets}/issues-details/http-request.adoc[]
+=== Request fields
+include::{snippets}/issues-details/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/issues-details/http-response.adoc[]
+=== Response  fields
+include::{snippets}/issues-details/response-fields.adoc[]
+
+
+<<labels>> +
+<<issues>> +
+<<open>> +
+<<closed>> +
+<<details>> +
+
+=== link:index.html[BACK]
+

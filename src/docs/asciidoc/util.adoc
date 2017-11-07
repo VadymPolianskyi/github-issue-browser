@@ -1,0 +1,23 @@
+= Getting Started With Spring REST Docs
+
+== link:index.html[BACK]
+
+<<fi>> +
+
+[#fi]
+== All labels
+
+=== Request example
+include::{snippets}/fi/http-request.adoc[]
+=== Request fields
+include::{snippets}/fi/request-fields.adoc[]
+
+=== Response example
+include::{snippets}/fi/http-response.adoc[]
+=== Response  fields
+include::{snippets}/fi/response-fields.adoc[]
+
+
+<<fi>> +
+
+=== link:index.html[BACK]
