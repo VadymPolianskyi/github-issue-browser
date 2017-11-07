@@ -1,9 +1,11 @@
 package com.piedpiper.gib.handler;
 
-import com.piedpiper.gib.protocol.FeautureIntegrationResponse;
-import com.piedpiper.gib.protocol.IssueDetailsRequest;
+import com.piedpiper.gib.protocol.FeatureIntegrationResponse;
+import com.piedpiper.gib.protocol.RepositoryRequest;
 import com.piedpiper.gib.service.GithubService;
 import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueSearchBuilder;
+import org.kohsuke.github.PagedSearchIterable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,36 +15,36 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class FeautureIntegrationHandler implements Handler<IssueDetailsRequest, FeautureIntegrationResponse> {
+public class FeatureIntegrationHandler implements Handler<RepositoryRequest, FeatureIntegrationResponse> {
 
     private final GithubService githubService;
 
     @Autowired
-    public FeautureIntegrationHandler(GithubService githubService) {
+    public FeatureIntegrationHandler(GithubService githubService) {
         this.githubService = githubService;
     }
 
     @Override
-    public FeautureIntegrationResponse handle(IssueDetailsRequest request) {
-        List<GHIssue> issues = githubService.getListIssues(request.getUser(), request.getRepository(), request.getToken());
+    public FeatureIntegrationResponse handle(RepositoryRequest request) {
+
+        PagedSearchIterable<GHIssue> response = githubService.getAllClosedIssues(request.getUser(), request.getRepository(), request.getToken());
 
         List<Integer> allDays = new ArrayList<>();
 
-        issues.forEach( issue -> {
+        response.forEach(issue -> {
             int days = calculateDays(issue);
             allDays.add(days);
         });
 
-        Long sum = 0L;
+        long sum = 0L;
         for (Integer allDate : allDays) {
             sum += allDate;
         }
 
-        int count = allDays.size();
-
+        int count = response.getTotalCount();
         int avg = Math.toIntExact(sum / count);
 
-        return new FeautureIntegrationResponse(allDays, avg);
+        return new FeatureIntegrationResponse(allDays, avg, count);
     }
 
     private Integer calculateDays(GHIssue issue) {
@@ -52,7 +54,7 @@ public class FeautureIntegrationHandler implements Handler<IssueDetailsRequest, 
             Date openAt = issue.getCreatedAt();
 
             long diff = closedAt.getTime() - openAt.getTime();
-            long days = ((diff/60)/60)/24;
+            long days = (diff/3600000)/24;
 
             return Math.toIntExact(days);
         } catch (IOException e) {
