@@ -5,13 +5,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+/**
+ * Author: Vadym Polyanski
+ * Date: 07.11.17
+ * Time: 17:08
+ */
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public @Data
-class FeautureIntegrationResponse extends Response {
-    private List<Integer> days;
-    private Integer avg;
+class RepositoryRequest extends TokenRequest{
+    private String user;
+    private String repository;
 }

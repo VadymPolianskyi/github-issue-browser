@@ -10,10 +10,8 @@ import org.kohsuke.github.GHIssueState;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public @Data class GetIssuesRequest extends TokenRequest {
+public @Data class GetIssuesRequest extends RepositoryRequest {
 
-    private String repository;
-    private String user;
     private int page;
     private int size;
     @JsonIgnore
