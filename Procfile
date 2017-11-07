@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar build/libs/github-issue-browser-1.0.jar
+web: java $JAVA_OPTS -jar build/libs/github-issue-browser-1.0.jar --server.port=$PORT $JAR_OPTS
