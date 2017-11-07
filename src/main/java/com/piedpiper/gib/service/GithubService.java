@@ -74,9 +74,12 @@ public class GithubService {
         throw new IssuesNotFoundException("Issues on page " + page + " with size " + size + "are not found.");
     }
 
-    public List<GHIssue> getListIssues(String user, String repository,String token) {
-        return getDefaultSearchBuilder(user, repository, token)
-                .list().asList();
+    public PagedSearchIterable<GHIssue> getAllClosedIssues(String user, String repository,String token) {
+        return getConnection(token).searchIssues()
+                .q("repo:" + user + "/" + repository)
+                .q("is:issue")
+                .isClosed()
+                .list();
     }
 
     private GHIssueSearchBuilder getDefaultSearchBuilder(String user, String repository, String token) {
