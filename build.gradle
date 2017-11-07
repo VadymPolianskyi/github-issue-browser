@@ -10,11 +10,6 @@ buildscript {
 	}
 }
 
-
-
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean
-
 apply plugin: 'java'
 apply plugin: "org.jenkins-ci.jpi"
 
