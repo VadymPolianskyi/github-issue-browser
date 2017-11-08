@@ -5,6 +5,8 @@ The **Github Issue Browser (GIB)** is an application that helps users see the is
 
 To obtain Rest API - https://github-issue-browser.herokuapp.com/docs/index.html
 
+Front-end develpment repository - https://github.com/Dream08/IT-Revolution
+
 ## Getting Started
 
 To start a project in Development mode, you should to take a few steps.
